@@ -1,4 +1,4 @@
-from flask import Flask, request, url_for, redirect, render_template
+from flask import Flask, jsonify, request, url_for, redirect, render_template
 import pandas as pd
 import pickle
 from flask_cors import CORS
@@ -63,12 +63,19 @@ def predict():
     
     # Get probability of positive class (diabetes)
     probability = diabetes_prediction[0][1]
-    output = '{0:.{1}f}'.format(probability * 100, 2) + " %"
+    output = '{0:.{1}f}'.format(probability * 100, 2)
 
-    if probability > 0.5:
-        return render_template('result.html', pred=f'You have the following chance of having diabetes: {output}')
-    else:
-        return render_template('result.html', pred=f'You have a low chance of having diabetes: {output}')
+    return jsonify({
+        'prediction': 'positive' if probability > 0.5 else 'negative',
+        'probability': float(output),
+        'probability_formatted': output + '%',
+        'message': f'You have {"a high" if probability > 0.5 else "a low"} chance of having diabetes: {output}%'
+    })
+
+    # if probability > 0.5:
+    #     return render_template('result.html', pred=f'You have the following chance of having diabetes: {output}')
+    # else:
+    #     return render_template('result.html', pred=f'You have a low chance of having diabetes: {output}')
 
 
 # Another way to do this
