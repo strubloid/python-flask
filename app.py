@@ -12,6 +12,25 @@ CORS(app)
 ## loading the model example_weights_knn.pkl
 model = pickle.load(open('example_weights_knn.pkl', 'rb'))
 
+# Validation function
+def validate_form_data(form_data):
+    """
+    Validate that all required fields are present and not empty.
+    Returns (is_valid, error_message)
+    """
+    required_fields = [
+        'pregnancies', 'glucose', 'blood_presure', 'skin_thickness',
+        'insulin_level', 'bmi', 'diabetes_pedigree', 'age'
+    ]
+    
+    # Check if all fields are present and not empty
+    for field in required_fields:
+        if field not in form_data or not form_data[field].strip():
+            return False, f"Field '{field}' is required and cannot be empty"
+    
+    return True, None
+
+
 # Define a route for the root URL
 @app.route('/')
 def use_template():
@@ -19,6 +38,14 @@ def use_template():
 
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
+
+    # Validate form data
+    is_valid, error_message = validate_form_data(request.form)
+    
+    ## Basic validation
+    if not is_valid:
+        return render_template('result.html', pred=f'Error: {error_message}'), 400
+   
     input_one = request.form['pregnancies']
     input_two = request.form['glucose']
     input_three = request.form['blood_presure']
