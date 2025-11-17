@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app, resources={
     r"/*": {
         "origins": [
-            "https://ds-frontend-8b124c0b64a5.herokuapp.com/",
+            "https://ds-frontend-8b124c0b64a5.herokuapp.com:*",
             "http://localhost:*",
             "http://127.0.0.1:*"
         ],
