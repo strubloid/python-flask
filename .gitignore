@@ -113,7 +113,7 @@ dmypy.json
 .pyre/
 
 # Machine Learning
-*.pkl
+# *.pkl
 *.h5
 *.model
 *.joblib
