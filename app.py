@@ -7,7 +7,17 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # adding the CORS middleware
-CORS(app) 
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://ds-frontend-8b124c0b64a5.herokuapp.com",
+            "http://localhost:*",
+            "http://127.0.0.1:*"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 ## loading the model example_weights_knn.pkl
 model = pickle.load(open('example_weights_knn.pkl', 'rb'))
