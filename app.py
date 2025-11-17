@@ -1,10 +1,13 @@
 from flask import Flask, request, url_for, redirect, render_template
 import pandas as pd
 import pickle
+from flask_cors import CORS
 
 # Create the Flask application instance
 app = Flask(__name__)
 
+# adding the CORS middleware
+CORS(app) 
 
 ## loading the model example_weights_knn.pkl
 model = pickle.load(open('example_weights_knn.pkl', 'rb'))
