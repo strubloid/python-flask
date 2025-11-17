@@ -25,14 +25,18 @@ def predict():
     input_seven=request.form['7']
     input_eight=request.form['8']
 
-    # setup_df = pd.DataFrame([pd.Series([input_one, input_two, input_three, input_four, input_five, input_six, input_seven, input_eight])])
-    setup_df = pd.DataFrame([pd.Series([input_one, input_two, input_three, input_four, input_five, input_six, input_seven, input_eight])], )
-    diabetes_prediction = model.predict(setup_df)
-    output='{0:.{1}f}'.format(diabetes_prediction[0][1],2)
-    output = str(float(output)*100) + " %"
+    # Create DataFrame with proper column names (8 features for diabetes dataset)
+    setup_df = pd.DataFrame([[input_one, input_two, input_three, input_four, input_five, input_six, input_seven, input_eight]])
+    
+    # Get probability predictions instead of just class prediction
+    diabetes_prediction = model.predict_proba(setup_df)
+    
+    # Get probability of positive class (diabetes)
+    probability = diabetes_prediction[0][1]
+    output = '{0:.{1}f}'.format(probability * 100, 2) + " %"
 
-    if output>str(0.5):
-        return render_template('result.html', pred=f'You hae the following change of having diabetes: {output}')
+    if probability > 0.5:
+        return render_template('result.html', pred=f'You have the following chance of having diabetes: {output}')
     else:
         return render_template('result.html', pred=f'You have a low chance of having diabetes: {output}')
 
