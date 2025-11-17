@@ -25,7 +25,8 @@ def predict():
     input_seven=request.form['7']
     input_eight=request.form['8']
 
-    setup_df = pd.DataFrame([pd.Series([input_one, input_two, input_three, input_four, input_five, input_six, input_seven, input_eight])])
+    # setup_df = pd.DataFrame([pd.Series([input_one, input_two, input_three, input_four, input_five, input_six, input_seven, input_eight])])
+    setup_df = pd.DataFrame([pd.Series([input_one, input_two, input_three, input_four, input_five, input_six, input_seven, input_eight])], )
     diabetes_prediction = model.predict(setup_df)
     output='{0:.{1}f}'.format(diabetes_prediction[0][1],2)
     output = str(float(output)*100) + " %"
